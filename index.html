@@ -11,15 +11,42 @@
 
 <body>
 
-    <h1>九大體質自我檢測</h1>
+   <h1>九大體質自我檢測</h1>
 
-    <p>快來試試九大體質自我檢測工具</p>
+<p>透過幾個簡單問題，了解最近的身體狀況。</p>
 
-    <h2>今天的身體狀況如何？</h2>
+<div id="question-box">
 
-    <button onclick="startTest()">開始檢測</button>
+    <h2 id="question">問題 1／5</h2>
 
-    <p>這是一個練習用的第一版網頁。</p>
+    <p>我容易疲倦,講話覺得中氣不足？</p>
+
+    <label>
+        <input type="radio" name="answer" value="2">
+        是，經常覺得疲倦
+    </label>
+
+    <br>
+
+    <label>
+        <input type="radio" name="answer" value="1">
+        偶爾會
+    </label>
+
+    <br>
+
+    <label>
+        <input type="radio" name="answer" value="0">
+        幾乎不會
+    </label>
+
+    <br><br>
+
+    <button onclick="nextQuestion()">下一題</button>
+
+</div>
+
+<script src="script.js"></script>
 
     <script src="script.js"></script>
     
