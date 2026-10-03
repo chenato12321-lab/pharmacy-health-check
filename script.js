@@ -2,45 +2,45 @@ const questions = [
     {
         question: "最近是否經常覺得疲倦？",
         answers: [
-            { text: "是，經常覺得疲倦", score: 3 },
-            { text: "偶爾會", score: 2 },
-            { text: "幾乎不會", score: 1 }
+            { text: "是，經常覺得疲倦", score: 2 },
+            { text: "偶爾會", score: 1 },
+            { text: "幾乎不會", score: 0 }
         ]
     },
 
     {
         question: "最近是否容易手腳冰冷？",
         answers: [
-            { text: "是，經常手腳冰冷", score: 3 },
-            { text: "偶爾會", score: 2 },
-            { text: "幾乎不會", score: 1 }
+            { text: "是，經常手腳冰冷", score: 2 },
+            { text: "偶爾會", score: 1 },
+            { text: "幾乎不會", score: 0 }
         ]
     },
 
     {
         question: "最近是否容易口渴？",
         answers: [
-            { text: "是，經常口渴", score: 3 },
-            { text: "偶爾會", score: 2 },
-            { text: "幾乎不會", score: 1 }
+            { text: "是，經常口渴", score: 2 },
+            { text: "偶爾會", score: 1 },
+            { text: "幾乎不會", score: 0 }
         ]
     },
 
     {
         question: "最近是否容易腹脹或消化不良？",
         answers: [
-            { text: "是，經常發生", score: 3 },
-            { text: "偶爾會", score: 2 },
-            { text: "幾乎不會", score: 1 }
+            { text: "是，經常發生", score: 2 },
+            { text: "偶爾會", score: 1 },
+            { text: "幾乎不會", score: 0 }
         ]
     },
 
     {
         question: "最近睡眠品質如何？",
         answers: [
-            { text: "經常睡不好", score: 3 },
-            { text: "偶爾睡不好", score: 2 },
-            { text: "大致良好", score: 1 }
+            { text: "經常睡不好", score: 2 },
+            { text: "偶爾睡不好", score: 1 },
+            { text: "大致良好", score: 0 }
         ]
     }
 ];
