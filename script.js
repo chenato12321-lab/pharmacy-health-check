@@ -55,8 +55,8 @@ function showQuestion() {
     document.getElementById("question").textContent =
         "問題 " + (currentQuestion + 1) + "／" + questions.length;
 
-    document.querySelector("#question-box p").textContent =
-        questionData.question;
+    document.getElementById("question-text").textContent =
+    questionData.question;
 
     const answerArea = document.querySelector("#question-box");
 
