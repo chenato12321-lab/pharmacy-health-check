@@ -1,39 +1,465 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-    <title>九大體質自我檢測</title>
-    
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>九種體質自我檢測</title>
+<meta name="description" content="回答 20 個生活狀態問題,約 3–5 分鐘,了解最近的身體傾向與日常調養方向。藥師衛教參考工具,非醫療診斷。">
+<meta property="og:title" content="九種體質自我檢測">
+<meta property="og:description" content="3–5 分鐘,了解最近的身體傾向與日常調養方向。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#2f5d50">
+<style>
+:root{
+  --bg:#f7f2e8; --card:#fffdf8; --ink:#2a2823; --muted:#6b665c; --line:#e4dccb;
+  --green:#2f5d50; --green-d:#234a3f; --accent:#b5653a; --soft:#eef3ee;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink); line-height:1.75; font-size:16px;
+  font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+h1,h2,h3{font-family:"Noto Serif TC","Songti TC","PMingLiU",serif; line-height:1.4; margin:0}
+p{margin:0}
+.wrap{max-width:560px; margin:0 auto; padding:20px 16px 56px}
+[hidden]{display:none !important}
+.card{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 20px}
+.eyebrow{font-size:13px; letter-spacing:.12em; color:var(--green); font-weight:600}
+h1{font-size:30px; margin:6px 0 12px; color:var(--green-d)}
+.lead{color:var(--ink); margin-bottom:16px}
+.notes{margin:0 0 20px; padding:14px 16px 14px 34px; background:var(--soft); border-radius:12px; color:#33433d; font-size:15px}
+.notes li{margin:2px 0}
+.btn{
+  display:block; width:100%; min-height:52px; padding:12px 18px; border-radius:14px; border:1px solid var(--green);
+  background:var(--green); color:#fff; font:inherit; font-weight:600; font-size:17px; text-align:center;
+  text-decoration:none; cursor:pointer; transition:background .15s, transform .1s;
+}
+.btn:hover{background:var(--green-d)}
+.btn:active{transform:scale(.99)}
+.btn.ghost{background:transparent; color:var(--green-d)}
+.btn.ghost:hover{background:var(--soft)}
+.btn+.btn{margin-top:10px}
+.btn:focus-visible,.opt:focus-visible,.link:focus-visible,summary:focus-visible{outline:3px solid #e0a35c; outline-offset:2px}
+.consent{display:flex; gap:10px; align-items:flex-start; font-size:14px; color:var(--muted); margin:0 0 16px}
+.consent input{margin-top:5px; width:18px; height:18px; flex:none}
+.fine{font-size:13px; color:var(--muted); margin-top:16px; line-height:1.6}
+
+/* quiz */
+.top{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:15px; color:var(--muted)}
+.link{background:none; border:0; padding:8px 4px; font:inherit; color:var(--green-d); cursor:pointer}
+.bar{height:8px; background:#e8dfcc; border-radius:99px; overflow:hidden; margin-bottom:16px}
+.bar i{display:block; height:100%; width:0; background:var(--green); border-radius:99px; transition:width .25s}
+.hint{font-size:13px; color:var(--muted); margin-bottom:8px}
+#q-text{font-size:22px; margin-bottom:22px; outline:none}
+.opts{display:grid; gap:10px}
+.opt{
+  min-height:56px; padding:12px 16px; border-radius:14px; border:1.5px solid var(--line); background:#fff;
+  font:inherit; font-size:17px; color:var(--ink); text-align:left; cursor:pointer; transition:border-color .15s, background .15s;
+}
+.opt:hover{border-color:var(--green)}
+.opt[aria-pressed="true"]{border-color:var(--green); background:var(--soft); font-weight:600}
+
+/* result */
+.hero{text-align:center; padding:28px 20px}
+.hero .small{font-size:14px; color:var(--muted)}
+.hero h2{font-size:32px; color:var(--green-d); margin:6px 0 8px}
+.hero .sub{color:var(--muted); font-size:15px}
+.type{background:var(--card); border:1px solid var(--line); border-left:6px solid var(--c); border-radius:16px; margin-top:14px; overflow:hidden}
+.type summary{display:flex; gap:14px; align-items:center; padding:16px 18px; cursor:pointer; list-style:none}
+.type summary::-webkit-details-marker{display:none}
+.seal{
+  flex:none; width:48px; height:48px; border-radius:50%; background:var(--c); color:#fff;
+  display:grid; place-items:center; font:700 22px/1 "Noto Serif TC","Songti TC",serif;
+}
+.type .ttl{flex:1}
+.type .ttl b{display:block; font-family:"Noto Serif TC","Songti TC",serif; font-size:20px}
+.type .ttl span{font-size:14px; color:var(--muted)}
+.type summary::after{content:"+"; font-size:24px; color:var(--muted); width:20px; text-align:center}
+.type[open] summary::after{content:"–"}
+.tbody{padding:2px 18px 20px}
+.tbody h4{margin:18px 0 4px; font-size:15px; color:var(--c)}
+.tbody ul{margin:0; padding-left:20px}
+.tbody li{margin:1px 0}
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+.chips span{background:#f3ece0; border-radius:99px; padding:3px 12px; font-size:14px}
+.caution{margin-top:18px; padding:12px 14px; background:#fbf1e6; border-radius:10px; font-size:14px; color:#6b4a2b}
+.panel{margin-top:14px}
+.panel h3{font-size:18px; margin-bottom:12px}
+.score-row{display:grid; grid-template-columns:64px 1fr 36px; gap:10px; align-items:center; font-size:14px; margin:7px 0}
+.track{position:relative; height:10px; background:#eee6d6; border-radius:99px}
+.track i{position:absolute; left:0; top:0; bottom:0; border-radius:99px; background:#b9b2a2}
+.score-row.hi .track i{background:var(--green)}
+.track em{position:absolute; left:60%; top:-4px; bottom:-4px; width:2px; background:#c9a46a}
+.score-row .v{text-align:right; color:var(--muted)}
+.legend{font-size:12px; color:var(--muted); margin-top:8px}
+.cta p{margin-bottom:14px}
+footer.disc{margin-top:20px; font-size:13px; color:var(--muted); line-height:1.7; text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
 </head>
-
 <body>
+<main class="wrap">
 
-   <h1>九大體質自我檢測</h1>
+  <!-- 首頁 -->
+  <section id="screen-intro" class="card">
+    <p class="eyebrow" id="eyebrow">藥師衛教小工具</p>
+    <h1>九種體質自我檢測</h1>
+    <p class="lead">回答 20 個生活狀態的問題,約 3–5 分鐘,了解你最近的身體傾向,以及日常調養的方向。</p>
+    <ul class="notes">
+      <li>請依「最近三個月」的感受作答</li>
+      <li>沒有標準答案,憑第一直覺選就好</li>
+      <li>適用 18 歲以上成人</li>
+    </ul>
+    <label class="consent" id="consent-row" hidden>
+      <input type="checkbox" id="consent">
+      <span>我同意以匿名方式回傳作答結果,供藥局改善衛教內容(不含姓名、電話等個人資料)。</span>
+    </label>
+    <button class="btn" id="start" type="button">開始檢測</button>
+    <p class="fine">本工具為生活調養的衛教參考,<b>不是醫療診斷</b>,也無法取代醫師或中醫師的問診。若有不適,請就醫諮詢。</p>
+  </section>
 
-<p>透過幾個簡單問題，了解最近的身體狀況。</p>
+  <!-- 題目 -->
+  <section id="screen-quiz" hidden>
+    <div class="top">
+      <button class="link" id="back" type="button">← 上一題</button>
+      <span id="count" aria-live="polite">1 / 20</span>
+    </div>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="20" aria-valuenow="1" id="bar"><i id="fill"></i></div>
+    <div class="card">
+      <p class="hint">請依最近三個月的狀況選擇</p>
+      <h2 id="q-text" tabindex="-1"></h2>
+      <div class="opts" id="opts"></div>
+    </div>
+  </section>
 
-<div id="question-box">
+  <!-- 結果 -->
+  <section id="screen-result" hidden>
+    <div class="card hero" id="hero"></div>
+    <div id="types"></div>
+    <div class="card panel" id="scores"></div>
+    <div class="card panel cta" id="cta"></div>
+    <button class="btn ghost" id="retake" type="button" style="margin-top:14px">重新檢測</button>
+    <footer class="disc">
+      本結果依你的自評作答產生,僅供生活調養與衛教參考,<b>非醫療診斷</b>,不能取代醫師或中醫師的問診。<br>
+      孕婦、哺乳中、慢性病患者或正在服藥者,調整飲食或使用保健品前請先諮詢醫師或藥師。
+    </footer>
+  </section>
 
-    <h2 id="question">問題 1／5</h2>
+</main>
 
-    <p>我容易疲倦,講話覺得中氣不足？</p>
+<script>
+(function(){
+'use strict';
 
-   <p><p id="question-text"></p></p>
+/* ===== 可自行修改的設定 ===== */
+var CONFIG = {
+  pharmacyName: '',   // 例:'○○藥局'(空白則顯示「藥局」)
+  lineUrl: '',        // 例:'https://lin.ee/xxxxxxx'(空白則不顯示按鈕)
+  bookingUrl: '',     // 例:到店諮詢/預約表單網址(空白則不顯示按鈕)
+  sheetWebhook: ''    // 選填:Google Apps Script 網址。設定後,使用者勾選同意才會匿名回傳結果
+};
 
-<br>
+/* ===== 題庫 ===== */
+var L_FIT   = ['不太符合','部分符合','大致符合'];
+var L_ALLG  = ['沒有','懷疑過','有被診斷'];
+var Q = [
+  {id:1,  g:'qixu',   t:'我容易疲倦,講話覺得中氣不足'},
+  {id:2,  g:'qixu',   t:'我稍微活動就容易流汗、喘'},
+  {id:3,  g:'yangxu', t:'我手腳容易冰冷,特別怕吹冷氣、怕冷'},
+  {id:4,  g:'yangxu', t:'我吃冷的食物容易腹瀉或不舒服'},
+  {id:5,  g:'yinxu',  t:'我容易口乾舌燥、喜歡喝冷飲'},
+  {id:6,  g:'yinxu',  t:'我容易失眠、睡覺容易醒,或手心腳心容易發熱'},
+  {id:7,  g:'tanshi', t:'我的身材容易發胖、腹部鬆軟,不易消瘦'},
+  {id:8,  g:'tanshi', t:'我早上起床容易覺得身體沉重、痰多黏膩'},
+  {id:9,  g:'shire',  t:'我容易長痘痘、口氣重或身體有異味'},
+  {id:10, g:'shire',  t:'我的大便容易黏膩不成形、排便不暢快'},
+  {id:11, g:'xueyu',  t:'我的皮膚容易出現瘀青,但想不起來撞到哪'},
+  {id:12, g:'xueyu',  t:'我的臉色或嘴唇顏色偏暗沉,或有黑眼圈'},
+  {id:13, g:'qiyu',   t:'我容易心情鬱悶、容易嘆氣'},
+  {id:14, g:'qiyu',   t:'我容易因為小事情緒起伏大、胸悶脹氣'},
+  {id:15, g:'tebing', t:'我從小就容易對特定食物、藥物或環境過敏'},
+  {id:16, g:'tebing', t:'我皮膚容易起蕁麻疹,或換季容易打噴嚏、鼻塞'},
+  {id:17, g:'pinghe', t:'我精神狀況穩定,睡眠、食慾、排便大致正常', labels:L_FIT},
+  {id:18, g:'pinghe', t:'我很少感冒,體力和情緒都算穩定', labels:L_FIT},
+  {id:19, g:'qiyu',   w:0.5, t:'我最近三個月情緒普遍偏低落或容易緊張焦慮'},
+  {id:20, g:'tebing', w:0.5, t:'我曾經被診斷或懷疑有過敏性疾病(如過敏性鼻炎、氣喘、異位性皮膚炎)', labels:L_ALLG}
+];
+var L_DEFAULT = ['不符合','偶爾符合','經常符合'];
+// 出題順序:不同體質交錯,避免作答時看出規律
+var ORDER = [1,3,5,7,9,11,13,15,2,4,6,8,10,12,14,16,17,18,19,20];
+var THRESH = 3;                      // 該體質達 3 分以上 → 明顯傾向
+var BIASED = ['qixu','yangxu','yinxu','tanshi','shire','xueyu','qiyu','tebing'];
+var MAX_SHOWN = 3;
 
-<button onclick="nextQuestion()">下一題</button>
+/* ===== 九種體質內容 ===== */
+var TYPES = {
+  qixu:{ name:'氣虛質', seal:'氣', c:'#a9742a', short:'氣虛',
+    tag:'元氣偏弱,容易覺得累',
+    desc:'身體「動力」不太足的傾向。常見容易疲倦、說話中氣偏弱、稍微活動就喘或冒汗,也可能比較容易感冒。',
+    feat:['容易疲倦、精神不濟','活動後容易喘、容易流汗','說話聲音偏小、懶得說話'],
+    yi:'三餐定時定量,選擇溫熱、好消化、營養足夠的食物,蛋白質與全穀類不可少。',
+    shao:'生冷冰品、過度節食、不吃早餐。',
+    life:'睡眠充足,避免過度勞累與熬夜。運動從散步、瑜伽、太極等溫和方式開始,循序漸進,以「做完不會更累」為原則。',
+    foods:['山藥','小米','地瓜','南瓜','紅棗','香菇','雞肉'],
+    caution:'若長期疲倦,同時伴隨體重下降、頭暈、心悸或臉色蒼白,可能與貧血、甲狀腺等問題有關,建議就醫檢查,不要只當作體質問題。' },
+  yangxu:{ name:'陽虛質', seal:'陽', c:'#b5553a', short:'陽虛',
+    tag:'怕冷、手腳冰涼',
+    desc:'身體「暖氣」偏不足的傾向。常見怕冷、手腳冰冷、喜歡喝熱的,吃到冰涼食物腸胃容易不舒服。',
+    feat:['手腳冰冷、比別人怕冷','吃冰冷食物容易腹瀉或胃不舒服','冷氣房或冬天特別不適'],
+    yi:'飲食以熱食、熟食為主,日常料理可適量加入薑、蔥、蒜等調味。',
+    shao:'冰飲、冰品、大量生冷瓜果,以及長時間待在冷氣房。',
+    life:'注意腰腹、腳踝與頸部保暖。白天多曬曬太陽、養成規律運動習慣。睡前可泡腳,水溫不宜過燙,避免燙傷。',
+    foods:['生薑','韭菜','核桃','桂圓','栗子','羊肉(冬季適量)'],
+    caution:'手腳冰冷合併皮膚變色、疼痛,或同時有疲倦、體重增加、便秘等情形,建議就醫排除循環或甲狀腺問題。' },
+  yinxu:{ name:'陰虛質', seal:'陰', c:'#7a4f8f', short:'陰虛',
+    tag:'偏燥偏熱,睡得不太安穩',
+    desc:'身體「滋潤」感偏不足的傾向。常見口乾舌燥、手心腳心偏熱、睡眠較淺,也容易覺得皮膚或喉嚨乾。',
+    feat:['口乾舌燥、想喝冷飲','手心腳心容易發熱','睡眠淺、容易醒'],
+    yi:'飲食以清淡、潤澤為原則,多攝取水分與含水量高的蔬果、豆製品。',
+    shao:'辛辣燥熱、煎炸燒烤、酒精、過量咖啡因,以及熬夜。',
+    life:'固定時間就寢,避免熬夜。運動選擇瑜伽、散步、游泳等不會大量出汗的方式,運動後記得補水。',
+    foods:['銀耳','百合','梨','蓮藕','黑芝麻','枸杞','豆腐'],
+    caution:'口乾若合併大量喝水、頻尿、體重下降,請盡早就醫檢查血糖。乾燥症狀持續不改善,也建議諮詢醫師。' },
+  tanshi:{ name:'痰濕質', seal:'痰', c:'#5d7f4f', short:'痰濕',
+    tag:'身體沉重、代謝偏慢',
+    desc:'體內「水分與代謝」較不順暢的傾向。常見身形偏豐腴、腹部鬆軟、早上起床覺得沉重、痰多黏膩。',
+    feat:['容易發胖、腹部鬆軟','早上起床身體沉重','痰多、口中黏膩'],
+    yi:'飲食清淡、少油少糖,多選擇原型食物與高纖的蔬菜、雜糧。',
+    shao:'含糖飲料、甜點、油炸、宵夜,以及過量的精緻澱粉。',
+    life:'建立規律的有氧運動習慣,一般成人建議每週累積約 150 分鐘中等強度運動。避免久坐,每小時起身活動一下。',
+    foods:['薏仁','赤小豆','冬瓜','白蘿蔔','海帶','陳皮'],
+    caution:'體重短期內明顯增加、打鼾嚴重或白天嗜睡,建議就醫評估代謝與睡眠呼吸狀況。海帶含碘較高,甲狀腺疾病患者攝取前請先詢問醫師或藥師。' },
+  shire:{ name:'濕熱質', seal:'濕', c:'#c0742a', short:'濕熱',
+    tag:'油膩上火,容易長痘',
+    desc:'體內「濕」與「熱」交雜的傾向。常見容易長痘、口氣偏重、身體有異味、排便黏膩不爽。',
+    feat:['容易長痘痘、出油','口氣重、身體異味','大便黏膩、排不乾淨'],
+    yi:'飲食清爽少油,多選擇清淡蔬菜、瓜類與豆類。',
+    shao:'油炸燒烤、麻辣鍋、酒精、含糖飲料、重口味宵夜。',
+    life:'保持規律排便與充足睡眠,規律運動、適度流汗。居家與衣物保持通風乾爽。',
+    foods:['綠豆','薏仁','冬瓜','苦瓜','絲瓜','小黃瓜'],
+    caution:'痘痘反覆嚴重發炎,或排便習慣明顯改變(如血便、持續腹瀉),請就醫,不要自行判斷。' },
+  xueyu:{ name:'血瘀質', seal:'瘀', c:'#9c3b4a', short:'血瘀',
+    tag:'循環偏慢,容易有瘀青',
+    desc:'身體「循環順暢度」較弱的傾向。常見臉色或嘴唇偏暗、黑眼圈明顯、容易有不明原因的瘀青。',
+    feat:['皮膚容易瘀青','臉色、唇色偏暗沉','黑眼圈明顯'],
+    yi:'飲食均衡,多吃蔬菜、菇類與深色食材,口味清淡,避免過度油膩。',
+    shao:'久坐不動、抽菸、過度冰冷的飲食。',
+    life:'每坐 1 小時起身活動、伸展。規律運動促進循環,並注意保暖。',
+    foods:['山楂','黑木耳','洋蔥','黑豆','玫瑰花'],
+    caution:'不明原因瘀青頻繁、牙齦或鼻子容易出血,或正在服用抗凝血藥(如 warfarin、aspirin、口服抗凝血劑)者,請先就醫評估。想以活血類食材或保健品調養前,也請先諮詢醫師或藥師。' },
+  qiyu:{ name:'氣鬱質', seal:'鬱', c:'#3f6f8f', short:'氣鬱',
+    tag:'壓力大、悶悶不舒服',
+    desc:'「情緒與氣機」較不舒暢的傾向。常見容易嘆氣、胸悶脹氣、情緒起伏大,壓力一大就影響吃飯與睡眠。',
+    feat:['容易嘆氣、心情鬱悶','小事情緒起伏大','胸悶、脹氣'],
+    yi:'飲食規律、不暴飲暴食。可用香氣清爽的花草茶或柑橘類為生活調劑。',
+    shao:'過量咖啡因、酒精,以及壓力大時用大量甜食、宵夜來解壓。',
+    life:'每天安排固定的放鬆時間:戶外散步、腹式呼吸、和朋友聊聊。規律運動對情緒穩定很有幫助。',
+    foods:['玫瑰花','茉莉花','陳皮','柚子','薄荷'],
+    caution:'若情緒低落或焦慮持續超過兩週、影響工作與睡眠,請尋求身心科或心理諮商協助。需要有人聊聊時,可撥打 1925 安心專線(24 小時免費)。' },
+  tebing:{ name:'特稟質', seal:'稟', c:'#a0527a', short:'特稟',
+    tag:'較敏感,環境變化易不適',
+    desc:'對特定食物、藥物或環境較敏感的傾向。常見換季打噴嚏、鼻塞、皮膚癢或起蕁麻疹。',
+    feat:['換季容易打噴嚏、鼻塞','皮膚容易癢、起蕁麻疹','對特定食物或藥物過敏'],
+    yi:'以均衡、少加工的食物為主,可用「飲食紀錄」找出自己的誘發因素。',
+    shao:'已知的過敏原;一次嘗試多種新食材或新保健品。',
+    life:'規律作息、避免過度疲勞。定期清洗寢具、減少塵蟎,換季前提早做好防護。',
+    foods:[],
+    foodNote:'此類型不建議自行嘗試新的草本或保健品,使用前請先諮詢藥師。',
+    caution:'若出現呼吸困難、喉嚨緊縮、臉或嘴唇腫脹,可能是嚴重過敏反應,請立即就醫或撥打 119。已確診的過敏疾病,請依醫囑治療。' },
+  pinghe:{ name:'平和質', seal:'和', c:'#2f5d50', short:'平和',
+    tag:'狀態穩定,持續維持',
+    desc:'目前身體狀態相對穩定,精神、睡眠、食慾與排便大致正常。這是很好的基礎,重點是持續維持。',
+    feat:['精神與體力穩定','睡眠、食慾、排便大致正常','不太容易感冒'],
+    yi:'均衡飲食,依季節選擇當季蔬果,三餐定時定量。',
+    shao:'長期熬夜、暴飲暴食或極端飲食法。',
+    life:'維持規律作息與運動習慣,季節轉換時適度調整衣物與作息。',
+    foods:['當季蔬果','全穀雜糧','豆類','堅果'],
+    caution:'體質會隨年齡、壓力與季節改變,建議每隔一段時間(例如換季)重新檢視自己的狀態。' }
+};
+var UNCLEAR = { name:'特徵不明顯', seal:'衡', c:'#6b7a74', tag:'介於各類型之間',
+  desc:'你的作答沒有特別集中在某一種體質,可能屬於輕微混合,或是目前狀態相對穩定。',
+  feat:['各項分數都沒有明顯偏高','可能有輕微、不集中的小困擾'],
+  yi:'以均衡飲食為基礎,三餐定時定量,多蔬菜、適量蛋白質。',
+  shao:'極端節食、長期熬夜、過量含糖飲料。',
+  life:'維持規律作息與適度運動。若有特定困擾(例如睡眠、腸胃、皮膚),可帶著具體問題到店與藥師聊聊。',
+  foods:[],
+  caution:'若有持續的不適症狀,請就醫檢查,不要只依自我檢測的結果判斷。' };
 
+/* ===== 計分 ===== */
+function computeResult(ans){
+  var scores = {}, k;
+  for(k in TYPES){ scores[k] = 0; }
+  Q.forEach(function(q){ scores[q.g] += (ans[q.id] || 0) * (q.w || 1); });
+  var biased = BIASED.filter(function(k){ return scores[k] >= THRESH; })
+    .sort(function(a,b){ return scores[b]-scores[a] || BIASED.indexOf(a)-BIASED.indexOf(b); });
+  var mode = biased.length ? 'biased' : (scores.pinghe >= THRESH ? 'pinghe' : 'unclear');
+  return { scores:scores, biased:biased, mode:mode };
+}
 
+/* ===== 介面 ===== */
+function $(s){ return document.querySelector(s); }
+function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+function fmt(n){ return n % 1 === 0 ? String(n) : n.toFixed(1); }
+function safeUrl(u){ return /^https:\/\//i.test(u) ? u : ''; }
+var pName = CONFIG.pharmacyName || '藥局';
+var qById = {}; Q.forEach(function(q){ qById[q.id]=q; });
+var state = { idx:0, ans:{}, lock:false };
+var screens = { intro:$('#screen-intro'), quiz:$('#screen-quiz'), result:$('#screen-result') };
 
-</div>
+function show(name){
+  Object.keys(screens).forEach(function(k){ screens[k].hidden = (k!==name); });
+  window.scrollTo(0,0);
+}
 
-<script src="script.js"></script>
+function renderQuestion(){
+  var id = ORDER[state.idx], q = qById[id], labels = q.labels || L_DEFAULT;
+  $('#count').textContent = (state.idx+1) + ' / ' + ORDER.length;
+  $('#fill').style.width = ((state.idx+1)/ORDER.length*100) + '%';
+  $('#bar').setAttribute('aria-valuenow', state.idx+1);
+  $('#q-text').textContent = q.t;
+  var box = $('#opts'); box.innerHTML = '';
+  labels.forEach(function(lb, v){
+    var b = el('button','opt', lb);
+    b.type = 'button';
+    b.setAttribute('aria-pressed', state.ans[id]===v ? 'true':'false');
+    b.addEventListener('click', function(){ choose(v); });
+    box.appendChild(b);
+  });
+  state.lock = false;
+}
 
-    <script src="script.js"></script>
-    
+function choose(v){
+  if(state.lock) return;
+  state.lock = true;
+  var id = ORDER[state.idx];
+  state.ans[id] = v;
+  Array.prototype.forEach.call($('#opts').children, function(b,i){ b.setAttribute('aria-pressed', i===v?'true':'false'); });
+  setTimeout(function(){
+    if(state.idx < ORDER.length-1){ state.idx++; renderQuestion(); $('#q-text').focus({preventScroll:true}); }
+    else { finish(); }
+  }, 220);
+}
+
+function listBlock(title, arr){
+  var f = document.createDocumentFragment();
+  f.appendChild(el('h4', null, title));
+  var ul = el('ul'); arr.forEach(function(t){ ul.appendChild(el('li', null, t)); });
+  f.appendChild(ul); return f;
+}
+function textBlock(title, text){
+  var f = document.createDocumentFragment();
+  f.appendChild(el('h4', null, title)); f.appendChild(el('p', null, text)); return f;
+}
+
+function typeCard(T, open){
+  var d = el('details','type'); d.style.setProperty('--c', T.c);
+  if(open) d.open = true;
+  var s = el('summary');
+  s.appendChild(el('span','seal',T.seal));
+  var t = el('div','ttl'); t.appendChild(el('b',null,T.name)); t.appendChild(el('span',null,T.tag));
+  s.appendChild(t); d.appendChild(s);
+  var b = el('div','tbody');
+  b.appendChild(el('p',null,T.desc));
+  b.appendChild(listBlock('常見特徵', T.feat));
+  b.appendChild(textBlock('飲食方向', '宜:' + T.yi));
+  b.lastChild.appendChild(el('p',null,'少:' + T.shao));
+  b.appendChild(textBlock('作息與運動', T.life));
+  if(T.foods && T.foods.length){
+    b.appendChild(el('h4',null,'日常食材參考'));
+    var c = el('div','chips'); T.foods.forEach(function(x){ c.appendChild(el('span',null,x)); });
+    b.appendChild(c);
+  } else if(T.foodNote){
+    b.appendChild(textBlock('食材提醒', T.foodNote));
+  }
+  b.appendChild(el('div','caution','⚠ 提醒:' + T.caution));
+  d.appendChild(b); return d;
+}
+
+function renderScores(res){
+  var box = $('#scores'); box.innerHTML = '';
+  box.appendChild(el('h3',null,'各體質分數一覽'));
+  BIASED.concat(['pinghe']).forEach(function(k){
+    var v = res.scores[k], hi = (k==='pinghe') ? false : v>=THRESH;
+    var row = el('div','score-row' + (hi?' hi':''));
+    row.appendChild(el('span',null,TYPES[k].short));
+    var tr = el('div','track'), bar = el('i'); bar.style.width = Math.min(v/5*100,100)+'%';
+    tr.appendChild(bar); if(k!=='pinghe') tr.appendChild(el('em'));
+    row.appendChild(tr); row.appendChild(el('span','v',fmt(v)));
+    box.appendChild(row);
+  });
+  box.appendChild(el('p','legend','金色線為「明顯傾向」參考線(3 分)。平和質分數越高,代表目前狀態越穩定。'));
+}
+
+function renderCta(){
+  var box = $('#cta'); box.innerHTML = '';
+  box.appendChild(el('h3',null,'想更了解適合自己的調養方式?'));
+  box.appendChild(el('p',null,'每個人的生活作息、用藥與健康狀況都不同。歡迎到「' + pName + '」與藥師聊聊,幫你把這份結果對照到日常生活。'));
+  var line = safeUrl(CONFIG.lineUrl), book = safeUrl(CONFIG.bookingUrl);
+  if(line){ var a = el('a','btn','用 LINE 詢問藥師'); a.href=line; a.target='_blank'; a.rel='noopener'; box.appendChild(a); }
+  if(book){ var b = el('a','btn ghost','預約到店諮詢'); b.href=book; b.target='_blank'; b.rel='noopener'; box.appendChild(b); }
+}
+
+function finish(){
+  var res = computeResult(state.ans);
+  var hero = $('#hero'), types = $('#types'); hero.innerHTML=''; types.innerHTML='';
+  var keys = [];
+  if(res.mode==='biased'){
+    keys = res.biased.slice(0, MAX_SHOWN);
+    hero.appendChild(el('p','small','你目前的體質傾向'));
+    hero.appendChild(el('h2',null, TYPES[keys[0]].name));
+    if(keys.length>1){
+      hero.appendChild(el('p','sub','兼有:' + keys.slice(1).map(function(k){return TYPES[k].name;}).join('、') + '傾向'));
+    } else {
+      hero.appendChild(el('p','sub', TYPES[keys[0]].tag));
+    }
+    keys.forEach(function(k,i){ types.appendChild(typeCard(TYPES[k], i===0)); });
+    if(res.biased.length > MAX_SHOWN || res.biased.length >= 4){
+      types.appendChild(el('div','caution','你有多個類型的分數偏高(共 ' + res.biased.length + ' 項),此處列出分數最高的 ' + keys.length + ' 項。若同時有多種不適且持續存在,建議就醫評估,或到店請藥師協助釐清。'));
+      types.lastChild.style.marginTop='14px';
+    }
+  } else if(res.mode==='pinghe'){
+    hero.appendChild(el('p','small','你目前的體質傾向'));
+    hero.appendChild(el('h2',null,TYPES.pinghe.name));
+    hero.appendChild(el('p','sub',TYPES.pinghe.tag));
+    types.appendChild(typeCard(TYPES.pinghe, true));
+  } else {
+    hero.appendChild(el('p','small','你目前的體質傾向'));
+    hero.appendChild(el('h2',null,UNCLEAR.name));
+    hero.appendChild(el('p','sub',UNCLEAR.tag));
+    types.appendChild(typeCard(UNCLEAR, true));
+  }
+  renderScores(res); renderCta(); report(res, keys);
+  show('result');
+}
+
+function report(res, keys){
+  var cb = $('#consent');
+  if(!CONFIG.sheetWebhook || !cb || !cb.checked) return;
+  try{
+    fetch(CONFIG.sheetWebhook, { method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ time:new Date().toISOString(), answers:state.ans, scores:res.scores, mode:res.mode, types:keys }) });
+  }catch(e){}
+}
+
+function reset(){ state.idx=0; state.ans={}; state.lock=false; show('intro'); }
+
+/* ===== 事件 ===== */
+if(CONFIG.pharmacyName){ $('#eyebrow').textContent = CONFIG.pharmacyName + '・藥師衛教小工具'; }
+if(CONFIG.sheetWebhook){ $('#consent-row').hidden = false; }
+$('#start').addEventListener('click', function(){ state.idx=0; state.ans={}; renderQuestion(); show('quiz'); $('#q-text').focus({preventScroll:true}); });
+$('#back').addEventListener('click', function(){
+  if(state.idx===0){ show('intro'); return; }
+  state.idx--; renderQuestion();
+});
+$('#retake').addEventListener('click', reset);
+document.addEventListener('keydown', function(e){
+  if(screens.quiz.hidden) return;
+  var n = parseInt(e.key,10);
+  if(n>=1 && n<=3){ choose(n-1); }
+});
+})();
+</script>
 </body>
 </html>
